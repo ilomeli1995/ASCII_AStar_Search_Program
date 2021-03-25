@@ -10,53 +10,70 @@ using std::string;
 using std::vector;
 using std::abs;
 
-enum class State {kEmpty, kObstacle};
+enum class State 
+{
+  kEmpty, 
+  kObstacle
+};
 
-vector<State> ParseLine(string line) {
+vector<State> ParseLine(string line) 
+{
     istringstream sline(line);
     int n;
     char c;
     vector<State> row;
-    while (sline >> n >> c && c == ',') {
-      if (n == 0) {
+
+    while (sline >> n >> c && c == ',') 
+    {
+      if (n == 0) 
         row.push_back(State::kEmpty);
-      } else {
+      else
         row.push_back(State::kObstacle);
-      }
     }
+
     return row;
 }
 
 
-vector<vector<State>> ReadBoardFile(string path) {
+vector< vector<State> > ReadBoardFile(string path) 
+{
   ifstream myfile (path);
-  vector<vector<State>> board{};
-  if (myfile) {
+  vector< vector<State> > board{};
+
+  if (myfile) 
+  {
     string line;
-    while (getline(myfile, line)) {
+
+    while (getline(myfile, line)) 
+    {
       vector<State> row = ParseLine(line);
       board.push_back(row);
     }
   }
+
   return board;
 }
 
 // TODO: Write the Search function stub here.
 
 
-string CellString(State cell) {
-  switch(cell) {
+string CellString(State cell) 
+{
+  switch(cell) 
+  {
     case State::kObstacle: return "⛰️   ";
     default: return "0   "; 
   }
 }
 
 
-void PrintBoard(const vector<vector<State>> board) {
-  for (int i = 0; i < board.size(); i++) {
-    for (int j = 0; j < board[i].size(); j++) {
+void PrintBoard(const vector< vector<State> > board) 
+{
+  for (int i = 0; i < board.size(); i++) 
+  {
+    for (int j = 0; j < board[i].size(); j++) 
       cout << CellString(board[i][j]);
-    }
+    
     cout << "\n";
   }
 }
@@ -68,4 +85,6 @@ int main() {
   // TODO: Call Search with "board", "init", and "goal". Store the results in the variable "solution".
   // TODO: Change the following line to pass "solution" to PrintBoard.
   PrintBoard(board);
+
+  return 0;
 }
