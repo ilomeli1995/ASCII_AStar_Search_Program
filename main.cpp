@@ -15,7 +15,8 @@ using std::abs;
 enum class State 
 {
   kEmpty, 
-  kObstacle
+  kObstacle,
+  kClosed
 };
 
 
@@ -63,6 +64,14 @@ int Heuristic(int x1, int y1, int x2, int y2)
   return (abs(x2 - x1) + abs(y2 - y1));
 }
 
+
+void AddToOpen(int x, int y, int g, int h, vector< vector<int> > &openNodes, vector< vector<State> > &grid)
+{
+  vector<int> l_node{ x, y, g, h};
+
+  openNodes.push_back(l_node);
+  grid[x][y] = State::kClosed;
+}
 
 vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[COORDINATE_SIZE], int goal[COORDINATE_SIZE])
 {
