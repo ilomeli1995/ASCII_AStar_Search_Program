@@ -10,6 +10,8 @@ using std::string;
 using std::vector;
 using std::abs;
 
+#define COORDINATE_SIZE 2
+
 enum class State 
 {
   kEmpty, 
@@ -54,7 +56,7 @@ vector< vector<State> > ReadBoardFile(string path)
   return board;
 }
 
-vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[2], int goal[2])
+vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[COORDINATE_SIZE], int goal[COORDINATE_SIZE])
 {
   vector< vector<State>> path{};
 
@@ -88,8 +90,8 @@ void PrintBoard(const vector< vector<State> > board)
 
 int main() 
 {
-  int init[2] = { 0,0 };
-  int goal[2] = { 4,5 };
+  int init[COORDINATE_SIZE] = { 0,0 };
+  int goal[COORDINATE_SIZE] = { 4,5 };
 
   auto board = ReadBoardFile("1.board");
 
