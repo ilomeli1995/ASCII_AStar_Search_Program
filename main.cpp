@@ -18,6 +18,7 @@ enum class State
   kObstacle
 };
 
+
 vector<State> ParseLine(string line) 
 {
     istringstream sline(line);
@@ -55,6 +56,13 @@ vector< vector<State> > ReadBoardFile(string path)
 
   return board;
 }
+
+
+int Heuristic(int x1, int y1, int x2, int y2)
+{
+  return (abs(x2 - x1) + abs(y2 - y1));
+}
+
 
 vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[COORDINATE_SIZE], int goal[COORDINATE_SIZE])
 {
