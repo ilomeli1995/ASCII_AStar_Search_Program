@@ -55,6 +55,14 @@ vector< vector<State> > ReadBoardFile(string path)
 }
 
 // TODO: Write the Search function stub here.
+vector< vector<State>> Search(vector< vector<State> > boardGrid, int start[2], int goal[2])
+{
+  vector< vector<State>> path{};
+
+  cout << "No path found." << std::endl;
+  
+  return path;
+}
 
 
 string CellString(State cell) 
@@ -79,7 +87,8 @@ void PrintBoard(const vector< vector<State> > board)
 }
 
 
-int main() {
+int main() 
+{
   // TODO: Declare "init" and "goal" arrays with values {0, 0} and {4, 5} respectively.
   auto board = ReadBoardFile("1.board");
   // TODO: Call Search with "board", "init", and "goal". Store the results in the variable "solution".
