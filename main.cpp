@@ -59,6 +59,15 @@ vector< vector<State> > ReadBoardFile(string path)
 }
 
 
+bool Compare(vector<int> firstNode, vector<int> secondNode)
+{
+  if((firstNode[2] + firstNode[3]) > (secondNode[2] + secondNode[3]))
+    return true; 
+  else
+    return false;
+}
+
+
 int Heuristic(int x1, int y1, int x2, int y2)
 {
   return (abs(x2 - x1) + abs(y2 - y1));
