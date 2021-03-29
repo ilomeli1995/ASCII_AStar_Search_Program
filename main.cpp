@@ -76,6 +76,9 @@ void AddToOpen(int x, int y, int g, int h, vector< vector<int> > &openNodes, vec
 vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[COORDINATE_SIZE], int goal[COORDINATE_SIZE])
 {
   vector< vector<State>> path{};
+  vector<vector<int>> openNodes {};
+
+  AddToOpen(start[0], start[1], 0, Heuristic(start[0], start[1], goal[0], goal[1]), openNodes, boardGrid);
 
   cout << "No path found." << std::endl;
   
