@@ -86,6 +86,16 @@ int Heuristic(int x1, int y1, int x2, int y2)
 }
 
 
+bool CheckValidCell(int x, int y, vector< vector<State> > &boardGrid)
+{
+  /* If x AND y are valid coordinates AND that coordinate is empty. Return TRUE */
+  if(((x < boardGrid[0].size()) && (y < boardGrid.size())) &&( boardGrid[x][y] == State::kEmpty))
+    return true;
+  else
+    return false;
+}
+
+
 void AddToOpen(int x, int y, int g, int h, vector< vector<int> > &openNodes, vector< vector<State> > &grid)
 {
   vector<int> l_node{ x, y, g, h};
