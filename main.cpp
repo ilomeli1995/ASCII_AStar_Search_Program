@@ -13,6 +13,7 @@ using std::abs;
 using std::sort;
 
 #define COORDINATE_SIZE 2
+constexpr char NUMBER_OF_NEIGHBORS = 4;
 
 enum class State 
 {
@@ -107,6 +108,35 @@ void AddToOpen(int x, int y, int g, int h, vector< vector<int> > &openNodes, vec
   grid[x][y] = State::kClosed;
 }
 
+
+/** 
+ * Expand current nodes's neighbors and add them to the open list.
+ */
+void ExpandNeighbors(vector<int> &currentNode,
+                     int goal[COORDINATE_SIZE],
+                     vector< vector<int> > &openNodes, 
+                     vector< vector<State> > &boardGrid)
+{
+  int nextX;
+  int nextY;
+  int g;
+  int h;
+
+  for(char iterator = 0; iterator < NUMBER_OF_NEIGHBORS; iterator++)
+  {
+    nextX = currentNode[0] + deltas[iterator][0];
+    nextY = currentNode[1] + deltas[iterator][1];
+    g = currentNode[2] + 1;
+    h = Heuristic(nextX, nextY, goal[0], goal[1]);
+
+    if(CheckValidCell(nextX, nextY, boardGrid))
+    {
+      AddToOpen(nextX, nextY, g, h, openNodes, boardGrid);
+    }
+  }
+}
+
+
 vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[COORDINATE_SIZE], int goal[COORDINATE_SIZE])
 {
   vector< vector<State>> path{};
@@ -125,6 +155,8 @@ vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[COOR
 
     if((currentNode[0] == goal[0]) && (currentNode[1] == goal[1]))
       return boardGrid;
+
+    ExpandNeighbors(currentNode, goal, openNodes, boardGrid);
   }
 
   cout << "No path found." << std::endl;
