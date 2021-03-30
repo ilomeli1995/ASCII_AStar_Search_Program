@@ -3,12 +3,14 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 using std::cout;
 using std::ifstream;
 using std::istringstream;
 using std::string;
 using std::vector;
 using std::abs;
+using std::sort;
 
 #define COORDINATE_SIZE 2
 
@@ -16,7 +18,8 @@ enum class State
 {
   kEmpty, 
   kObstacle,
-  kClosed
+  kClosed,
+  kPath
 };
 
 
@@ -68,6 +71,15 @@ bool Compare(vector<int> firstNode, vector<int> secondNode)
 }
 
 
+/**
+ * Sort the two-dimensional vector of ints in descending order.
+ */
+void CellSort(vector<vector<int>> *v) 
+{
+  sort(v->begin(), v->end(), Compare);
+}
+
+
 int Heuristic(int x1, int y1, int x2, int y2)
 {
   return (abs(x2 - x1) + abs(y2 - y1));
@@ -88,6 +100,19 @@ vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[COOR
   vector<vector<int>> openNodes {};
 
   AddToOpen(start[0], start[1], 0, Heuristic(start[0], start[1], goal[0], goal[1]), openNodes, boardGrid);
+
+  while(!openNodes.empty())
+  {
+    CellSort(&openNodes);
+
+    vector<int> currentNode = openNodes.back();
+    openNodes.pop_back();
+
+    boardGrid[currentNode[0]][currentNode[1]] = State::kPath;
+
+    if((currentNode[0] == goal[0]) && (currentNode[1] == goal[1]))
+      return boardGrid;
+  }
 
   cout << "No path found." << std::endl;
   
