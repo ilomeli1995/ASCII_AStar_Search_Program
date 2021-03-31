@@ -20,11 +20,18 @@ enum class State
   kEmpty, 
   kObstacle,
   kClosed,
-  kPath
+  kPath,
+  kStart,
+  kFinish
 };
 
 
-const int deltas[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+const int deltas[4][2] = {
+  {-1, 0}, 
+  {0, -1}, 
+  {1, 0}, 
+  {0, 1}
+  };
 
 
 vector<State> ParseLine(string line) 
@@ -93,10 +100,9 @@ int Heuristic(int x1, int y1, int x2, int y2)
 bool CheckValidCell(int x, int y, vector< vector<State> > &boardGrid)
 {
   /* If x AND y are valid coordinates AND that coordinate is empty. Return TRUE */
-  if(((x < boardGrid[0].size()) && (y < boardGrid.size())) &&( boardGrid[x][y] == State::kEmpty))
-    return true;
-  else
-    return false;
+  if ((x >= 0 && x < boardGrid.size()) && (y >= 0 && y < boardGrid[0].size()))
+    return boardGrid[x][y] == State::kEmpty;
+  return false;
 }
 
 
@@ -113,7 +119,7 @@ void AddToOpen(int x, int y, int g, int h, vector< vector<int> > &openNodes, vec
  * Expand current nodes's neighbors and add them to the open list.
  */
 void ExpandNeighbors(vector<int> &currentNode,
-                     int goal[COORDINATE_SIZE],
+                     int goal[2],
                      vector< vector<int> > &openNodes, 
                      vector< vector<State> > &boardGrid)
 {
@@ -126,11 +132,11 @@ void ExpandNeighbors(vector<int> &currentNode,
   {
     nextX = currentNode[0] + deltas[iterator][0];
     nextY = currentNode[1] + deltas[iterator][1];
-    g = currentNode[2] + 1;
-    h = Heuristic(nextX, nextY, goal[0], goal[1]);
 
     if(CheckValidCell(nextX, nextY, boardGrid))
     {
+      g = currentNode[2] + 1;
+      h = Heuristic(nextX, nextY, goal[0], goal[1]);
       AddToOpen(nextX, nextY, g, h, openNodes, boardGrid);
     }
   }
@@ -154,7 +160,11 @@ vector< vector<State> > Search(vector< vector<State> > boardGrid, int start[COOR
     boardGrid[currentNode[0]][currentNode[1]] = State::kPath;
 
     if((currentNode[0] == goal[0]) && (currentNode[1] == goal[1]))
+    {
+      boardGrid[start[0]][start[1]] = State::kStart;
+      boardGrid[goal[0]][goal[1]]   = State::kFinish;
       return boardGrid;
+    }
 
     ExpandNeighbors(currentNode, goal, openNodes, boardGrid);
   }
@@ -170,7 +180,10 @@ string CellString(State cell)
   switch(cell) 
   {
     case State::kObstacle: return "⛰️   ";
-    default: return "0   "; 
+    case State::kPath:     return "🚗   ";
+    case State::kStart:    return "🚦   ";
+    case State::kFinish:   return "🏁   ";
+    default:               return "0    "; 
   }
 }
 
